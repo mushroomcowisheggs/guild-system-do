@@ -45,15 +45,17 @@ if (this.hunters.length >= MAX_SLOTS) {
 ## 项目结构
 
 ```
-charity-guild-do/
-├── src/
+guild-system-do/
+├── backend/
 │   ├── index.js          # Worker 入口：API 路由转发到 DO
 │   └── quest-do.js       # QuestDO Durable Object 类
-├── public/
-│   ├── index.html        # 前端抢单页面
-│   └── admin.html        # 管理后台
-├── wrangler.toml         # Cloudflare 配置（含 DO 绑定）
-├── package.json
+├── frontend/
+│   ├── protected
+│   └── public
+│         ├── index.html        # 前端抢单页面
+│         └── admin.html        # 管理后台
+├── wrangler.toml               # Cloudflare 配置（含 DO 绑定）
+├── package.json                # 依赖项
 └── README.md
 ```
 
