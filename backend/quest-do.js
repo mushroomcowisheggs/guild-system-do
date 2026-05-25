@@ -140,12 +140,6 @@ export class QuestDO {
     // 6. 内存更新 + 持久化（原子操作）
     // 由于 DO 串行执行，以下操作是原子的，不会出现并发覆盖
     // 校验通过后，构造新数组（不直接修改 this.hunters）
-    const newHunter = { 
-      name: trimmedName.substring(0, 15),
-      email: trimmedEmail,
-      timestamp: new Date().toISOString(),
-      status: 'PENDING' 
-    };
     const newHunters = [...this.hunters, newHunter];
 
     // 先持久化（原子写入）
@@ -198,6 +192,7 @@ export class QuestDO {
 
     // 3. 查找并更新
     let updated = false;
+    // 基于当前内存生成新数组
     const newHunters = this.hunters.map(h => {
       if (h.email === targetEmail) {
         updated = true;
@@ -214,11 +209,6 @@ export class QuestDO {
     }
 
     // 4. 内存更新 + 持久化
-    // 基于当前内存生成新数组
-    const newHunters = this.hunters.map(h => 
-      h.email === targetEmail ? { ...h, status: newStatus } : h
-    );
-
     // 先持久化
     await this.state.storage.put(STORAGE_KEY, newHunters);
 

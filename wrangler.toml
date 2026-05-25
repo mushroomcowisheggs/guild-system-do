@@ -29,7 +29,8 @@ new_classes = ["QuestDO"]
 
 # ---- 静态资源（Assets）----
 # public 目录下的将自动作为静态资源提供
-[[assets]]
-bucket = "./frontend/public"
+[assets]
+directory = "./frontend/public"
+binding = "ASSETS"
 # protected/ 不作为 assets 目录，而是作为 Worker 代码层虚拟路由，由 Worker 鉴权后返回内容
 # （内容可以来自外部存储、内嵌字符串，或通过另一个 assets 绑定），暂未实现

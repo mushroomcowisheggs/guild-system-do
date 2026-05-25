@@ -57,8 +57,26 @@ async function routeToDO(request, env) {
 
   // 3. 获取 DO 实例 stub（代理对象，所有调用都会发送到 DO 所在的数据中心）
   const doStub = doNamespace.get(doId);
-
+  console.log('doStub type:', typeof doStub, 'has fetch:', typeof doStub?.fetch);
+  if (!doStub || typeof doStub.fetch !== 'function') {
+    return new Response(
+      JSON.stringify({ error: 'Durable Object stub 无效，请检查 migrations 和类导出' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+  if (!doStub) {
+    return new Response(
+      JSON.stringify({ error: '无法获取 Durable Object 实例，请检查类导出和本地环境' }),
+      { status: 500, headers: { 'Content-Type': 'application/json' } }
+    );
+  }
+  
   // 4. 转发原始请求到 DO
   // DO 内部保证串行处理，彻底消除竞态条件
-  return doStub.fetch(request);
+  try {
+    return await doStub.fetch(request);
+  } catch (err) {
+    console.error('doStub.fetch error:', err);
+    return new Response(JSON.stringify({ error: err.stack }), { status: 500 });
+  }
 }
