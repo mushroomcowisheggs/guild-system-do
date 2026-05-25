@@ -115,3 +115,12 @@ guild-system-do/
 | **无数据完整性证明** | 没有类似 Merkle Tree 或哈希链的机制让用户可以验证自己看到的账本与全球最新版本一致，且未被回滚。 |
 
 **结论**：这是一个**中心化信任模型**——用户必须相信 Cloudflare 不出问题，且管理员密钥持有者诚实。不完全满足去中心化公开透明要求。未来需要引入更多措施。
+
+### 待实现功能
+| 功能 | Durable Objects 版 |
+|------|--------------------|
+| **防刷（速率限制）** | 在 DO 内部维护 `this.rateMap`，使用 `storage.get`/`put` 持久化（避免内存重启丢失） |
+| **多签核销** | 在 `handleUpdateStatus` 中验证多个签名头 `X-Signature-1`、`X-Signature-2` |
+| **审计日志** | 新增 `this.auditLog` 数组，每次状态变更 `push` 并 `storage.put`；提供 `/api/audit` 接口只读返回 |
+| **Merkle 树公开验证** | 每次 `fetch` 时动态计算根哈希，并返回响应头 `X-Merkle-Root`；客户端可校验 |
+| **定期对外哈希** | 使用 `cron trigger`（Workers Cron）每小时调用自己内部接口，将根哈希发往 Twitter/Webhook |
