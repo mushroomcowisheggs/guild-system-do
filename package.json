@@ -1,0 +1,22 @@
+{
+  "name": "charity-guild-system-do",
+  "version": "1.0.0",
+  "description": "慈善家工会悬赏板 - 基于 Cloudflare Durable Objects 的版本",
+  "main": "src/index.js",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail"
+  },
+  "keywords": [
+    "cloudflare",
+    "workers",
+    "durable-objects",
+    "hunter-guild"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}
